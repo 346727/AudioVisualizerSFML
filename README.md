@@ -1,45 +1,123 @@
-# SFML C++ MacOS Example
+#Harmonogram
 
-A very simple example of how to use SFML in VSCode on MacOS
+Oto harmonogram pracy na cały semestr dla projektu audio wizualizera wraz z użytymi technologiami i środowiskami:
 
-# Prerequisites
+**Technologie i Środowiska**
 
-1. [Git](https://git-scm.com/)
-2. [VSCode](https://code.visualstudio.com/)
-3. [Homebrew](https://brew.sh)
-4. [Make](https://www.gnu.org/software/make/#download)
+•	**Język programowania**: C++
 
-# Setup
+•	**Biblioteka graficzna**: SFML (Simple and Fast Multimedia Library)
 
-First, clone this repo
+•	**Analiza dźwięku**: FFT (Fast Fourier Transform) – zewnętrzna biblioteka np. FFTW lub KissFFT
 
-```
-git clone https://github.com/beatzoid/sfml-macos
-```
+•	**Środowisko programistyczne**: Visual Studio Code (VS Code)
 
-Or you can click the green `Use this template` to automagically make a new repo under your account with all the files ([example](https://github.com/Beatzoid/sfml-template-test)) and then clone that.
+•	**System kompilacji**: CMake 
 
-<br />
+•	**System operacyjny**: macOS
 
-Then, open it in VSCode,
+**Harmonogram na Semestr (około 14 tygodni, zajęcia co dwa tygodnie)**
 
-install SFML using homebrew
+**Tydzień 1–2: Rozpoczęcie projektu**
 
-```
-brew install sfml
-```
+•	**Cel**: Zapoznanie się z wymaganiami projektu, ustalenie użytych technologii.
 
-and get the path to the installation
+•	**Zadania**:
 
-```
-brew info sfml
-```
+•	Zainstalowanie SFML i FFT.
 
-You will see something like `/opt/homebrew/Cellar/sfml/2.5.1_2` in the output. If the numbers differ it's ok.
-First, you need to edit the `Makefile` and change the `SFML_PATH` variable to the path you got above. Then, open `.vscode/c_cpp_properties.json` and change the second entry in the `includePath` array to the path you got.
+•	Skonfigurowanie środowiska programistycznego (VS Code/CMake).
 
-Then, press `Cmd+Shift+B` in VSCode to build and `FN+F5` to run. If it works, you should see a window with a black background and cyan circle. Once you exit the program, you should also see the number "5" in the terminal. Congrats, you can now make whatever you want with SFML!
+•	Przetestowanie prostego projektu w SFML (np. otwarcie okna).
 
-# Credit
+**Tydzień 3–4: Obsługa dźwięku**
 
-[This](https://stackoverflow.com/a/73402250/10626998) StackOverflow answer
+•	**Cel**: Wczytanie i odtwarzanie plików audio.
+
+•	**Zadania**:
+
+•	Wczytanie pliku audio MP3/WAV przy użyciu SFML (sf::SoundBuffer i sf::Sound).
+
+•	Odtwarzanie dźwięku w aplikacji.
+
+•	Testowanie różnych formatów plików audio.
+
+**Tydzień 5–6: Analiza dźwięku – FFT**
+
+•	**Cel**: Implementacja FFT do analizy częstotliwości dźwięku.
+
+•	**Zadania**:
+
+•	Integracja wybranej biblioteki FFT z projektem.
+
+•	Implementacja podstawowej analizy FFT na próbkach dźwięku.
+
+•	Wyświetlanie wyników FFT w konsoli (dla weryfikacji poprawności).
+
+**Tydzień 7–8: Podstawowa wizualizacja**
+
+•	**Cel**: Stworzenie podstawowej wizualizacji wyników FFT.
+
+•	**Zadania**:
+
+•	Implementacja prostej wizualizacji (np. słupki dla różnych pasm częstotliwości).
+
+•	Synchronizacja dźwięku z wizualizacją.
+
+•	Testowanie wydajności i płynności animacji.
+
+**Tydzień 9–10: Rozbudowa wizualizacji**
+
+•	**Cel**: Uatrakcyjnienie wizualizacji, dodanie efektów.
+
+•	**Zadania**:
+
+•	Dodanie kolorów i animacji do wizualizacji (np. dynamicznie zmieniające się kolory w zależności od intensywności dźwięku).
+
+•	Implementacja różnych typów wizualizacji (np. fale, okręgi, sinusoidy).
+
+•	Testowanie różnych plików audio i optymalizacja wydajności.
+
+**Tydzień 11–12: Interaktywność i kontrola**
+
+•	**Cel**: Dodanie funkcji interaktywnych.
+
+•	**Zadania**:
+
+•	Implementacja sterowania klawiaturą (zmiana trybu wizualizacji, pauza, wybór pliku audio).
+
+•	Dodanie suwaków lub innych elementów GUI (np. czułość wizualizacji, szybkość animacji).
+
+•	Optymalizacja wielowątkowości (jeśli potrzebne).
+
+**Tydzień 13–14: Testy i finalizacja projektu**
+
+•	**Cel**: Testowanie, optymalizacja i przygotowanie do prezentacji.
+
+•	**Zadania**:
+
+•	Testowanie projektu na różnych urządzeniach i systemach operacyjnych.
+
+•	Debugowanie i poprawki kodu (wydajność, synchronizacja).
+
+•	Przygotowanie dokumentacji projektu (opis, instrukcja obsługi).
+
+•	Przygotowanie projektu do prezentacji (np. wgranie na GitHub, przygotowanie slajdów).
+
+**Tydzień 15–16: Prezentacja i ewaluacja**
+
+•	**Cel**: Prezentacja gotowego projektu.
+
+•	**Zadania**:
+
+•	Finalna prezentacja projektu na zajęciach.
+
+•	Zbiór opinii i ewaluacja projektu.
+
+•	Dalsze poprawki (jeśli potrzebne) na podstawie feedbacku.
+
+**Wskazówki**
+
+•	Każde spotkanie co dwa tygodnie powinno zakończyć się przeglądem postępu z prowadzącym i dyskusją na temat ewentualnych problemów technicznych.
+
+•	Testuj projekt regularnie, aby unikać problemów z wydajnością lub błędami w późniejszych etapach.

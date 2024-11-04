@@ -5,9 +5,9 @@
             "type": "cppdbg",
             "request": "launch",
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/bin/",
+            "cwd": "${workspaceFolder}/build/bin",
             "environment": [],
-            "program": "${workspaceFolder}/bin/app",
+            "program": "${workspaceFolder}/build/bin/audio_visualizer",
             "MIMode": "lldb",
             "targetArchitecture": "arm64",
             "externalConsole": false
