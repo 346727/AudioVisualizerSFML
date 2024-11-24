@@ -11,6 +11,13 @@
             "MIMode": "lldb",
             "targetArchitecture": "arm64",
             "externalConsole": false
+        },
+        {
+            "name": "CMake: CMake Script",
+            "type": "cmake",
+            "request": "launch",
+            "cmakeDebugType": "script",
+            "scriptPath": "${file}"
         }
     ]
 }
