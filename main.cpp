@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "src/Header/AudioVisualizer.h"
 #include "src/Header/SongPanel.h"
+#include "src/Header/SettingsPanel.h"
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Audio Visualizer");

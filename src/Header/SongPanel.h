@@ -15,11 +15,14 @@ public:
     void update(sf::RenderWindow& window);
     void draw(sf::RenderWindow& window);
 
+    
+
 private:
     void loadSongs(const std::string& songsDirectory);
     void createButtons();
     void playSong(const std::string& filename);
     void navigateToPage(int pageNumber);
+    void toggleMenu();
 
     AudioVisualizer& audioVisualizer;
     std::vector<std::string> songs;
@@ -32,6 +35,10 @@ private:
 
     const float buttonWidth = 200.f;
     const float buttonHeight = 40.f;
+
+    bool menuVisible;               // śledzi, czy menu jest widoczne
+    bool toggleButtonPressed;       // sprawdza, czy przycisk jest przytrzymywany (flaga)
+    sf::Text toggleButton;          // przycisk toggle
 
     
 };
