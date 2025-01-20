@@ -1,144 +1,180 @@
-#include "SettingsPanel.h"
-#include <iostream>
+#include "../Header/SettingsPanel.h"
+#include "../Header/tinyfiledialogs.h"
+
+#include <sstream>
+#include <vector>
 #include <filesystem>
 
-SettingsPanel::SettingsPanel(const sf::Vector2f& position, const sf::Vector2f& size)
-    : visible(false), backgroundIsImage(false), sensitivity(1.0f), lineThickness(2.0f) {
+std::string SettingsPanel::getTruncatedPath(const std::string& fullPath) {
+    const int maxSegments = 3;
+
+    // podziel segmenty
+    std::vector<std::string> segments;
+    std::filesystem::path path(fullPath);
+    for (const auto& part : path) {
+        segments.push_back(part.string());
+    }
+
+    // Jak ma mniej segmentow, pokaz cale
+    if (segments.size() <= maxSegments) {
+        return fullPath;
+    }
+
+    // weź ostatnie segmenty i polacz
+    std::ostringstream truncatedPath;
+    truncatedPath << ".../";
+    for (size_t i = segments.size() - maxSegments; i < segments.size(); ++i) {
+        truncatedPath << segments[i];
+        if (i < segments.size() - 1) {
+            truncatedPath << "/";
+        }
+    }
+    return truncatedPath.str();
+}
+
+
+SettingsPanel::SettingsPanel(sf::RenderWindow& window, AudioVisualizer& visualizer, SongPanel& songPanel, const sf::Vector2f& position)
+    : window(window), visualizer(visualizer), songPanel(songPanel), position(position), isDragging(false), isShrunk(false) {
+    loadFont();
+    setupUI();
+}
+
+void SettingsPanel::loadFont() {
     if (!font.loadFromFile("Arial.ttf")) {
-        std::cerr << "Error loading font!" << std::endl;
-    }
-
-    // Panel design
-    panelShape.setPosition(position);
-    panelShape.setSize(size);
-    panelShape.setFillColor(sf::Color(50, 50, 50, 200));
-    panelShape.setOutlineColor(sf::Color::White);
-    panelShape.setOutlineThickness(2);
-
-    // tło
-    backgroundPreview.setSize({size.x - 20.f, 100.f});
-    backgroundPreview.setPosition(position.x + 10.f, position.y + 10.f);
-    backgroundPreview.setFillColor(sf::Color::Black);
-
-    // suwaki
-    sensitivitySlider.setSize({size.x - 40.f, 10.f});
-    sensitivitySlider.setPosition(position.x + 20.f, position.y + 130.f);
-    sensitivitySlider.setFillColor(sf::Color::Green);
-
-    lineThicknessSlider.setSize({size.x - 40.f, 10.f});
-    lineThicknessSlider.setPosition(position.x + 20.f, position.y + 170.f);
-    lineThicknessSlider.setFillColor(sf::Color::Blue);
-
-    createButtons();
-}
-
-void SettingsPanel::createButtons() {
-    buttons.clear();
-
-    std::vector<std::string> labels = {
-        "Set Background Image", "Set Background Color",
-        "Set Line Color", "Reset to Default"
-    };
-
-    float buttonHeight = 40.f;
-    sf::Vector2f buttonSize(panelShape.getSize().x - 20.f, buttonHeight);
-
-    for (size_t i = 0; i < labels.size(); ++i) {
-        sf::Text button;
-        button.setFont(font);
-        button.setString(labels[i]);
-        button.setCharacterSize(20);
-        button.setFillColor(sf::Color::White);
-        button.setPosition(panelShape.getPosition().x + 10.f,
-                           panelShape.getPosition().y + 200.f + i * (buttonHeight + 10.f));
-        buttons.push_back(button);
+        throw std::runtime_error("Failed to load font");
     }
 }
 
-void SettingsPanel::toggleVisibility() {
-    visible = !visible;
+void SettingsPanel::setupUI() {
+    // Background panel
+    panelBackground.setSize(sf::Vector2f(250, 150));
+    panelBackground.setPosition(position);
+    panelBackground.setFillColor(sf::Color(50, 50, 50, 200));
+
+    // Title text
+    titleText.setFont(font);
+    titleText.setString("Settings");
+    titleText.setCharacterSize(24);
+    titleText.setFillColor(sf::Color::White);
+    titleText.setPosition(position.x + 10, position.y + 10);
+
+    // Songs directory label
+    songsDirectoryLabel.setFont(font);
+    songsDirectoryLabel.setString("Songs Directory:");
+    songsDirectoryLabel.setCharacterSize(18);
+    songsDirectoryLabel.setFillColor(sf::Color::White);
+    songsDirectoryLabel.setPosition(position.x + 10, position.y + 50);
+
+    // Songs directory value 
+    songsDirectoryValue.setFont(font);
+    songsDirectoryValue.setString(getTruncatedPath(songPanel.getSongsDirectory()));
+    songsDirectoryValue.setCharacterSize(18);
+    songsDirectoryValue.setFillColor(sf::Color::White);
+    songsDirectoryValue.setPosition(position.x + 10, position.y + 80);
+
+    // Browse button
+    browseButton.setSize(sf::Vector2f(100, 30));
+    browseButton.setPosition(position.x + 10, position.y + 115);
+    browseButton.setFillColor(sf::Color(100, 100, 255));
+    browseText.setPosition(position.x + 20, position.y + 120);
+    browseText.setFont(font);
+    browseText.setCharacterSize(18);
+    browseText.setFillColor(sf::Color::White);
+    browseText.setString("Browse...");
 }
 
-void SettingsPanel::handleInput(const sf::Event& event, sf::RenderWindow& window) {
-    if (event.type == sf::Event::MouseButtonReleased) {
-        sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
 
-        for (size_t i = 0; i < buttons.size(); ++i) {
-            if (buttons[i].getGlobalBounds().contains(mousePos)) {
-                if (i == 0) {
-                    // Sobraz tła
-                    std::string filepath = "../backgrounds/default.jpg"; //w przyszłości okno dialogowe
-                    setBackgroundImage(filepath);
-                } else if (i == 1) {
-                    // kolor tła
-                    setBackgroundColor(sf::Color::Red); //w przyszłości okno dialogowe
-                    // kolor linii
-                    setLineColor(sf::Color::Yellow); //w przyszłości okno color picker.
-                } else if (i == 3) {
-                    // reset
-                    resetToDefault();
-                }
+void SettingsPanel::setPosition(const sf::Vector2f& newPosition) {
+    position = newPosition;
+
+    // Update UI
+    panelBackground.setPosition(position);
+    titleText.setPosition(position.x + 10, position.y + 10);
+    songsDirectoryLabel.setPosition(position.x + 10, position.y + 50);
+    songsDirectoryValue.setPosition(position.x + 10, position.y + 80);
+    browseButton.setPosition(position.x + 10, position.y + 115);
+    browseText.setPosition(position.x + 20, position.y + 120);
+}
+
+void SettingsPanel::shrinkPanel() {
+    isShrunk = true;
+
+    // Shrink
+    panelBackground.setSize(sf::Vector2f(150, 40));
+    titleText.setPosition(position.x + 10, position.y + 5);
+
+    // Hide
+    songsDirectoryLabel.setString("");
+    songsDirectoryValue.setString("");
+    browseButton.setSize(sf::Vector2f(0, 0));
+    browseText.setString("");
+}
+
+void SettingsPanel::expandPanel() {
+    isShrunk = false;
+
+    // Restore 
+    panelBackground.setSize(sf::Vector2f(250, 150));
+    setupUI();
+}
+
+void SettingsPanel::draw() {
+    window.draw(panelBackground);
+    window.draw(titleText);
+
+    if (!isShrunk) {
+        window.draw(songsDirectoryLabel);
+        window.draw(songsDirectoryValue);
+        window.draw(browseButton);
+        window.draw(browseText);
+    }
+}
+
+void SettingsPanel::handleEvent(const sf::Event& event) {
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+
+
+    if (event.type == sf::Event::MouseButtonPressed) {
+        if (titleText.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
+            if (isShrunk) {
+                expandPanel();
+            } else {
+                shrinkPanel();
             }
         }
     }
+
+    // wyszukiwanie, okno dialogowe.
+    if (!isShrunk && event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+        if (browseButton.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
+            const char* path = tinyfd_selectFolderDialog("Select Songs Directory", songPanel.getSongsDirectory().c_str());
+            if (path) {
+                songPanel.setSongsDirectory(path);
+
+
+                songsDirectoryValue.setString(getTruncatedPath(path));
+                songPanel.createButtons();
+            }
+        }
+    }
+
+// Dragging logic
+    if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+        if (panelBackground.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
+            isDragging = true;
+            dragOffset = sf::Vector2f(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)) - position;
+        }
+    } else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
+        isDragging = false;
+    } else if (event.type == sf::Event::MouseMoved && isDragging) {
+        sf::Vector2f newPanelPosition(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+        setPosition(newPanelPosition - dragOffset);
+    }
+
+    
 }
+
 
 void SettingsPanel::update() {
-    // aktualizacja suwakow
-    sensitivitySlider.setPosition(
-        panelShape.getPosition().x + 20.f,
-        panelShape.getPosition().y + 130.f + sensitivitySlider.getSize().y / 2.f - 5.f
-    );
-    sensitivitySlider.setFillColor(sf::Color(
-        static_cast<sf::Uint8>(sensitivity * 255),
-        static_cast<sf::Uint8>((1.0f - sensitivity) * 255),
-        0
-    ));
-
-    lineThicknessSlider.setPosition(
-        panelShape.getPosition().x + 20.f,
-        panelShape.getPosition().y + 170.f + lineThicknessSlider.getSize().y / 2.f - 5.f
-    );
-}
-
-void SettingsPanel::draw(sf::RenderWindow& window) {
-    if (!visible) return;
-
-    window.draw(panelShape);
-    window.draw(backgroundPreview);
-    window.draw(sensitivitySlider);
-    window.draw(lineThicknessSlider);
-
-    for (const auto& button : buttons) {
-        window.draw(button);
-    }
-}
-
-void SettingsPanel::setBackgroundImage(const std::string& filepath) {
-    if (backgroundTexture.loadFromFile(filepath)) {
-        backgroundPreview.setTexture(&backgroundTexture);
-        backgroundIsImage = true;
-    } else {
-        std::cerr << "Error loading background image: " << filepath << std::endl;
-    }
-}
-
-void SettingsPanel::setBackgroundColor(const sf::Color& color) {
-    backgroundPreview.setFillColor(color);
-    backgroundIsImage = false;
-}
-
-void SettingsPanel::setLineColor(const sf::Color& color) {
-    lineColor = color;
-}
-
-void SettingsPanel::resetToDefault() {
-    setBackgroundColor(sf::Color::Black);
-    setLineColor(sf::Color::White);
-    sensitivity = 1.0f;
-    lineThickness = 2.0f;
-}
-
-bool SettingsPanel::isVisible() const {
-    return visible;
+    // Placeholder for future updates
 }

@@ -1,53 +1,45 @@
-#ifndef SETTINGSPANEL_H
-#define SETTINGSPANEL_H
+#ifndef SETTINGS_PANEL_H
+#define SETTINGS_PANEL_H
 
 #include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
-#include <string>
-#include <vector>
+#include <stdexcept>
+#include "../Header/SongPanel.h"
+#include "../Header/AudioVisualizer.h"
 
 class SettingsPanel {
 public:
-    SettingsPanel(const sf::Vector2f& position, const sf::Vector2f& size);
+    SettingsPanel(sf::RenderWindow& window, AudioVisualizer& visualizer, SongPanel& songPanel, const sf::Vector2f& position);
 
-    // Metody do zarzadzania user input
-    void toggleVisibility();
-    void handleInput(const sf::Event& event, sf::RenderWindow& window);
+    void draw();
+    void handleEvent(const sf::Event& event);
     void update();
-    void draw(sf::RenderWindow& window);
-
-    // ustwawienia
-    void setBackgroundImage(const std::string& filepath);
-    void setBackgroundColor(const sf::Color& color);
-    void setLineColor(const sf::Color& color);
-    void resetToDefault();
-
-    // dostępy
-    bool isVisible() const;
 
 private:
-    sf::RectangleShape panelShape;
-    sf::RectangleShape backgroundPreview;
-    sf::Color backgroundColor;
-    sf::Color lineColor;
+    void loadFont();
+    void setupUI();
+    void setPosition(const sf::Vector2f& newPosition);
+    void shrinkPanel();
+    void expandPanel();
+    std::string getTruncatedPath(const std::string& fullPath); // New helper function
 
-    std::vector<sf::Text> buttons;
+    sf::RenderWindow& window;
+    AudioVisualizer& visualizer;
+    SongPanel& songPanel;
+    sf::Vector2f position;
+
+    sf::RectangleShape panelBackground;
+    sf::Text titleText;
+    sf::Text songsDirectoryLabel;
+    sf::Text songsDirectoryValue;
+    sf::RectangleShape browseButton;
+    sf::Text browseText;
+
     sf::Font font;
 
-    bool visible;
-    bool backgroundIsImage;
-    sf::Texture backgroundTexture;
-
-    // Suwaki i opcje
-    float sensitivity;
-    float lineThickness;
-    sf::RectangleShape sensitivitySlider;
-    sf::RectangleShape lineThicknessSlider;
-
-    // Helper metody
-    void createButtons();
-    void updateSliders(sf::RenderWindow& window);
-    void applyBackground();
+    bool isDragging;
+    bool isShrunk;
+    sf::Vector2f dragOffset;
 };
 
-#endif // SETTINGSPANEL_H
+
+#endif // SETTINGS_PANEL_H
