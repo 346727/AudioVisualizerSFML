@@ -1,16 +1,17 @@
 #include <SFML/Graphics.hpp>
+#include "src/Header/SettingsPanel.h"
 #include "src/Header/AudioVisualizer.h"
 #include "src/Header/SongPanel.h"
-#include "src/Header/SettingsPanel.h"
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Audio Visualizer");
-    window.setFramerateLimit(60);
-
-    std::string songsDirectory = "../songs";
 
     AudioVisualizer visualizer;
-    SongPanel songPanel(visualizer, songsDirectory, sf::Vector2f(10.f, 10.f));
+    SongPanel songPanel(visualizer, "../songs/");
+    songPanel.setSongsDirectory("../songs/");
+    sf::Vector2f position(550, 50);
+
+    SettingsPanel settingsPanel(window, visualizer, songPanel, position);
 
     while (window.isOpen()) {
         sf::Event event;
@@ -18,18 +19,21 @@ int main() {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
+            settingsPanel.handleEvent(event);
+            songPanel.update(window);
+            
         }
 
-        window.clear(sf::Color::Black); // Czyszczenie okna
+        visualizer.update(window);
 
-        // Wywolanie metod klasy SongPanel
-        songPanel.update(window);  // Handlowanie input
-        songPanel.draw(window);    // rysownie przyciskw
-
-        visualizer.update(window);  // aktualizacja animacji
-        visualizer.draw(window); // rysowanie animacji
-
-        window.display(); // aktualizacja okna
+        window.clear();
+        visualizer.draw(window);
+        settingsPanel.draw();
+        songPanel.draw(window);
+        
+        window.display();
+        
+        
     }
 
     return 0;

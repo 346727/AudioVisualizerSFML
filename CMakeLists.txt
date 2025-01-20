@@ -40,6 +40,8 @@ add_executable(audio_visualizer
     main.cpp
     src/source_code/AudioVisualizer.cpp
     src/source_code/SongPanel.cpp
+    src/source_code/SettingsPanel.cpp
+    src/source_code/tinyfiledialogs.c
 )
 
 include_directories(${CMAKE_SOURCE_DIR}/src/Headers)

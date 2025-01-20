@@ -15,14 +15,24 @@ public:
     void update(sf::RenderWindow& window);
     void draw(sf::RenderWindow& window);
 
-    
+    const std::string& getSongsDirectory() const {
+        return songsDirectory;
+    }
 
-private:
+    void setSongsDirectory(const std::string& directory) {
+        songsDirectory = directory;
+    }
+
     void loadSongs(const std::string& songsDirectory);
     void createButtons();
+
+private:
+    
     void playSong(const std::string& filename);
     void navigateToPage(int pageNumber);
     void toggleMenu();
+
+    void updateAudioSource(std::string pathname);
 
     AudioVisualizer& audioVisualizer;
     std::vector<std::string> songs;
@@ -39,6 +49,8 @@ private:
     bool menuVisible;               // śledzi, czy menu jest widoczne
     bool toggleButtonPressed;       // sprawdza, czy przycisk jest przytrzymywany (flaga)
     sf::Text toggleButton;          // przycisk toggle
+
+    std::string songsDirectory;
 
     
 };

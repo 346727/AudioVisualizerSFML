@@ -112,7 +112,7 @@ void SongPanel::navigateToPage(int pageNumber) {
 
 
 void SongPanel::playSong(const std::string& filename) {
-    if (audioVisualizer.loadAudio("../songs/" + filename)) {
+    if (audioVisualizer.loadAudio(songsDirectory + filename)) {
         audioVisualizer.play();
     } else {
         std::cerr << "Error loading song: " << filename << std::endl;
@@ -168,24 +168,29 @@ void SongPanel::update(sf::RenderWindow& window) {
 
 
 void SongPanel::draw(sf::RenderWindow& window) {
-    // rysuj przycisk toggle
+    // Draw the toggle button
     window.draw(toggleButton);
 
-    // nie rysuj, jak ukryte
+    // Skip drawing the menu if it's not visible
     if (!menuVisible) return;
 
-    
-    float startY = toggleButton.getPosition().y + toggleButton.getGlobalBounds().height + 10.f;
+    // Calculate starting Y position for song buttons to avoid overlapping with toggle button
+    float startY = toggleButton.getPosition().y + toggleButton.getGlobalBounds().height + 20.f; // Padding
 
+    // Draw song buttons and update their positions directly
     for (size_t i = 0; i < songButtons.size(); ++i) {
-        songButtons[i].setPosition(10.f, startY + i * (buttonHeight + 10.f));
+        songButtons[i].setPosition(10.f, startY + i * (buttonHeight + 10.f)); // Adjust Y position
         window.draw(songButtons[i]);
     }
 
-    // rysuj przyciski nawigacji
+    // Calculate starting Y position for navigation buttons
+    float navStartY = startY + songButtons.size() * (buttonHeight + 10.f) + 20.f; // Additional padding
+
+    // Draw navigation buttons and update their positions directly
     for (size_t i = 0; i < navigationButtons.size(); ++i) {
-        navigationButtons[i].setPosition(10.f + i * 150.f, startY + songButtons.size() * (buttonHeight + 10.f));
+        navigationButtons[i].setPosition(10.f + i * 150.f, navStartY); // Position side by side
         window.draw(navigationButtons[i]);
     }
 }
+
 
