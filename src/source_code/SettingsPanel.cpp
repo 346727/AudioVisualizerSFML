@@ -151,9 +151,11 @@ void SettingsPanel::handleEvent(const sf::Event& event) {
             if (path) {
                 songPanel.setSongsDirectory(path);
 
-
                 songsDirectoryValue.setString(getTruncatedPath(path));
+                songPanel.update(window);
+                songPanel.loadSongs(songPanel.getSongsDirectory());
                 songPanel.createButtons();
+                songPanel.draw(window);
             }
         }
     }

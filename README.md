@@ -18,106 +18,69 @@ Oto harmonogram pracy na cały semestr dla projektu audio wizualizera wraz z uż
 
 **Harmonogram na Semestr (około 14 tygodni, zajęcia co dwa tygodnie)**
 
-**Tydzień 1–2: Rozpoczęcie projektu**
+#📅 Etap 1: Analiza i Planowanie (1-2 dni)#
 
-•	**Cel**: Zapoznanie się z wymaganiami projektu, ustalenie użytych technologii.
+✅ Cel: Określenie funkcjonalności i technologii
+🔹 Wybór języka programowania (C++) i bibliotek (SFML, FFTW3)
+🔹 Opracowanie ogólnej architektury aplikacji
+🔹 Określenie interfejsu użytkownika (UI)
 
-•	**Zadania**:
+#📅 Etap 2: Inicjalizacja Projektu (1 dzień)#
 
-•	Zainstalowanie SFML i FFT.
+✅ Cel: Utworzenie podstawowego szkieletu aplikacji
+🔹 Konfiguracja środowiska programistycznego (kompilator, VS Code)
+🔹 Utworzenie głównej pętli SFML (main.cpp)
+🔹 Tworzenie okna aplikacji przy użyciu SFML
 
-•	Skonfigurowanie środowiska programistycznego (VS Code/CMake).
+#📅 Etap 3: Obsługa Plików Audio i Odtwarzanie (2-3 dni)#
 
-•	Przetestowanie prostego projektu w SFML (np. otwarcie okna).
+✅ Cel: Wczytywanie i odtwarzanie plików dźwiękowych
+🔹 Implementacja AudioVisualizer
+🔹 Wczytywanie plików (sf::SoundBuffer)
+🔹 Obsługa odtwarzania (sf::Sound)
 
-**Tydzień 3–4: Obsługa dźwięku**
+#📅 Etap 4: Implementacja Transformacji Fouriera (FFT) (3-4 dni)#
 
-•	**Cel**: Wczytanie i odtwarzanie plików audio.
+✅ Cel: Przetwarzanie sygnału dźwiękowego w celu analizy częstotliwości
+🔹 Integracja biblioteki FFTW3
+🔹 Tworzenie planu FFT (fftw_plan)
+🔹 Pobieranie próbek i obliczanie ich widma częstotliwości
+🔹 Konwersja danych FFT do postaci gotowej do wizualizacji
 
-•	**Zadania**:
+#📅 Etap 5: Tworzenie Wizualizacji (3-5 dni)#
 
-•	Wczytanie pliku audio MP3/WAV przy użyciu SFML (sf::SoundBuffer i sf::Sound).
+✅ Cel: Dynamiczne rysowanie wizualizacji dźwięku
+🔹 Analiza wyników FFT i ich interpretacja
+🔹 Rysowanie słupków amplitudy przy użyciu SFML
+🔹 Optymalizacja wydajności (aktualizacja na bieżąco)
 
-•	Odtwarzanie dźwięku w aplikacji.
+#📅 Etap 6: Interfejs Użytkownika – Panel Ustawień (2-3 dni)#
 
-•	Testowanie różnych formatów plików audio.
+✅ Cel: Dodanie interaktywnego UI do sterowania aplikacją
+🔹 Tworzenie SettingsPanel
+🔹 Obsługa wyboru katalogu z muzyką
+🔹 Implementacja dynamicznych zmian ustawień
 
-**Tydzień 5–6: Analiza dźwięku – FFT**
+#📅 Etap 7: System Zarządzania Playlistą (2-3 dni)#
 
-•	**Cel**: Implementacja FFT do analizy częstotliwości dźwięku.
+✅ Cel: Możliwość wybierania i zmiany utworów
+🔹 Implementacja SongPanel
+🔹 Wczytywanie plików z katalogu
+🔹 Obsługa zmiany piosenek
 
-•	**Zadania**:
+#📅 Etap 8: Optymalizacja i Poprawki (2-4 dni)#
 
-•	Integracja wybranej biblioteki FFT z projektem.
+✅ Cel: Usprawnienie działania aplikacji i eliminacja błędów
+🔹 Optymalizacja FFT i SFML dla lepszej wydajności
+🔹 Poprawki interfejsu użytkownika
+🔹 Debugowanie i testowanie różnych plików audio
 
-•	Implementacja podstawowej analizy FFT na próbkach dźwięku.
+#📅 Etap 9: Finalizacja i Dokumentacja (1-2 dni)#
 
-•	Wyświetlanie wyników FFT w konsoli (dla weryfikacji poprawności).
+✅ Cel: Przygotowanie aplikacji do prezentacji i dalszego rozwoju
+🔹 Dodanie komentarzy w kodzie
+🔹 Tworzenie README.md z opisem działania
+🔹 Przetestowanie wszystkich funkcji
 
-**Tydzień 7–8: Podstawowa wizualizacja**
 
-•	**Cel**: Stworzenie podstawowej wizualizacji wyników FFT.
-
-•	**Zadania**:
-
-•	Implementacja prostej wizualizacji (np. słupki dla różnych pasm częstotliwości).
-
-•	Synchronizacja dźwięku z wizualizacją.
-
-•	Testowanie wydajności i płynności animacji.
-
-**Tydzień 9–10: Rozbudowa wizualizacji**
-
-•	**Cel**: Uatrakcyjnienie wizualizacji, dodanie efektów.
-
-•	**Zadania**:
-
-•	Dodanie kolorów i animacji do wizualizacji (np. dynamicznie zmieniające się kolory w zależności od intensywności dźwięku).
-
-•	Implementacja różnych typów wizualizacji (np. fale, okręgi, sinusoidy).
-
-•	Testowanie różnych plików audio i optymalizacja wydajności.
-
-**Tydzień 11–12: Interaktywność i kontrola**
-
-•	**Cel**: Dodanie funkcji interaktywnych.
-
-•	**Zadania**:
-
-•	Implementacja sterowania klawiaturą (zmiana trybu wizualizacji, pauza, wybór pliku audio).
-
-•	Dodanie suwaków lub innych elementów GUI (np. czułość wizualizacji, szybkość animacji).
-
-•	Optymalizacja wielowątkowości (jeśli potrzebne).
-
-**Tydzień 13–14: Testy i finalizacja projektu**
-
-•	**Cel**: Testowanie, optymalizacja i przygotowanie do prezentacji.
-
-•	**Zadania**:
-
-•	Testowanie projektu na różnych urządzeniach i systemach operacyjnych.
-
-•	Debugowanie i poprawki kodu (wydajność, synchronizacja).
-
-•	Przygotowanie dokumentacji projektu (opis, instrukcja obsługi).
-
-•	Przygotowanie projektu do prezentacji (np. wgranie na GitHub, przygotowanie slajdów).
-
-**Tydzień 15–16: Prezentacja i ewaluacja**
-
-•	**Cel**: Prezentacja gotowego projektu.
-
-•	**Zadania**:
-
-•	Finalna prezentacja projektu na zajęciach.
-
-•	Zbiór opinii i ewaluacja projektu.
-
-•	Dalsze poprawki (jeśli potrzebne) na podstawie feedbacku.
-
-**Wskazówki**
-
-•	Każde spotkanie co dwa tygodnie powinno zakończyć się przeglądem postępu z prowadzącym i dyskusją na temat ewentualnych problemów technicznych.
-
-•	Testuj projekt regularnie, aby unikać problemów z wydajnością lub błędami w późniejszych etapach.
+**⏳ Czas całkowity: ~16-24 dni**
